@@ -1,12 +1,16 @@
+import os
 # Libraries
 import tkinter as tk
 from tkinter import *
 # Window Tabs Libraries
 from tkinter import ttk
 from tkinter.scrolledtext import *
-
+#Chat bot imports
 from chatterbot import ChatBot
 chatbot = ChatBot("Chatquisha")
+
+#imported the library to have her talk
+from gtts import gTTS
 
 # Create GUI
 # Create Window
@@ -132,6 +136,7 @@ trainer.train(conversation)
 trainer.train(conversation_football)
 trainer.train(conversation_Gaming)
 trainer.train(conversation_StarWars)
+trainer.train(conversation_Personal_Info)
 
 #this is for the clear but to stop talking about the subject you and the AI are talking about.
 convo_started = False
@@ -142,17 +147,34 @@ def run_ai():
     if not convo_started:
         tab2_display2.delete("1.0", tk.END)
         tab2_display2.insert(tk.END, "\n\n\t*** Welcome to a talk with Chatquisha ***\n")
-        chatbot_response = ("\nHello, I am Chatquisha ")
-        tab2_display2.insert(tk.END, "Chatquisha says: " + chatbot_response)
+        mytext = ("\nHello, I am Chatquisha ")
+        tab2_display2.insert(tk.END, "Chatquisha says: " + mytext)
         #clear button
         convo_started = True
     if convo_started:
         user_response = input_box2.get("1.0", tk.END)
         #when you type in your response and display
         tab2_display2.insert(tk.END, "\nYou: " + user_response)
-        chatbot_response = str(chatbot.get_response(user_response))
+        #chat bot will responsed when talked to with a voice
+        mytext = str(chatbot.get_response(user_response))
         #chatquishas response when talking
-        tab2_display2.insert(tk.END, "\nChatquisha says: " + chatbot_response)
+        tab2_display2.insert(tk.END, "\nChatquisha says: " + mytext)
+
+        #Yes!!! she is French!!!
+        language = 'fr'
+
+        # Passing the text and language to the engine,
+        # here we have marked slow=False. Which tells
+        # the module that the converted audio should
+        # have a high speed
+        myobj = gTTS(text=mytext, lang=language, slow=False)
+
+        # Saving the converted audio in a mp3 file named
+        # welcome
+        myobj.save("welcome.mp3")
+
+        # Playing the converted file
+        os.system("welcome.mp3")
 
 #when you end the conversation your on she will display have a "nice day"
 def end_convo():
@@ -204,7 +226,7 @@ button_process_stuff3.grid(row=5, column=0, padx=10, pady=10)
 
 #size of the bottom display
 tab2_display2 = ScrolledText(tab2, height=18)
-tab2_display2.grid(row=5, column=0, padx=10, pady=10)
+tab2_display2.grid(row=7, column=0, padx=10, pady=10)
 
 # Keep window alive
 window.mainloop()
