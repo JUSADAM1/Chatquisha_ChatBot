@@ -1,3 +1,7 @@
+
+
+
+
 import os
 # Libraries
 import tkinter as tk
@@ -5,12 +9,20 @@ from tkinter import *
 # Window Tabs Libraries
 from tkinter import ttk
 from tkinter.scrolledtext import *
-#Chat bot imports
+# Chat bot imports
 from chatterbot import ChatBot
-chatbot = ChatBot("Chatquisha")
 
-#imported the library to have her talk
+chatbot = ChatBot("Chatquisha")
+# imported the library to have her talk
 from gtts import gTTS
+# Speech Recognition library
+import speech_recognition as sr
+#Initializer for the recognizer !?!?! WORD
+r = sr.Recognizer()
+
+sample_rate = 48000
+chunk_size = 2048
+device_id = 1
 
 # Create GUI
 # Create Window
@@ -29,7 +41,7 @@ style = ttk.Style(window)
 # ws = West South
 style.configure('lefttab.TNotebook', tabpostition='wn')
 
-#tab control
+# tab control
 tab_control = ttk.Notebook(window)
 
 # Create tabs
@@ -51,53 +63,55 @@ tab_control.add(tab5, text='About tab')
 label1 = Label(tab1, text='Home', padx=5, pady=5)
 # 0,0 is top left of window
 label1.grid(column=0, row=0)
-#Chatquishas tab
-label2 = Label(tab2, text='Welcome to Chatquisha!!', padx=55, pady=20,font="Times 32")
+# Chatquishas tab
+label2 = Label(tab2, text='Welcome to Chatquisha!!', padx=55, pady=20, font="Times 32")
 label2.grid(column=0, row=0)
-#other tab
+# other tab
 label3 = Label(tab3, text='My Page Title', padx=5, pady=5)
 label3.grid(column=0, row=0)
-#another tab
+# another tab
 label4 = Label(tab4, text='My Page Title', padx=5, pady=5)
 label4.grid(column=0, row=0)
-#another tab
+# another tab
 label5 = Label(tab5, text='About Title', padx=5, pady=5)
 label5.grid(column=0, row=0)
 
 tab_control.pack(expand=1, fill='both')
 
+
 # Functions
 def run_code_on_tab_1():
-     input_text = input_box.get('1.0', tk.END)
-     output_text = input_text
-     processed_text = input_text
-     tab1_display.insert(tk.END, processed_text)
+    input_text = input_box.get('1.0', tk.END)
+    output_text = input_text
+    processed_text = input_text
+    tab1_display.insert(tk.END, processed_text)
 
 
 def clear_input_box():
-     input_box.delete(1.0, END)
+    input_box.delete(1.0, END)
 
 
 def clear_display_result():
-    tab1_display.delete(1.0,END)
+    tab1_display.delete(1.0, END)
+
 
 from chatterbot.trainers import ListTrainer
 
-#starter conversation
+# starter conversation
 conversation = ["Hi!! how are you doing?",
                 "I am doing Great.",
                 "That is good to hear",
                 "Thank you.",
                 "You're welcome."
                 ]
-#football conversation
+# football conversation
 conversation_football = ["What is your favorite football team?",
                          "My favorite football team is the Oakland Raiders.",
                          "Do you play fantasy football?",
                          "Who do you like on the raiders?",
                          ]
 
-#Conversation about games
+# Conversation about games
 conversation_Gaming = ["What is your favorite game",
                        "What games do you play",
                        "I play games, do you?",
@@ -106,15 +120,18 @@ conversation_Gaming = ["What is your favorite game",
                        "Yes I play games.",
                        ]
 
-#conversation about Star Wars
-conversation_StarWars = ["Do you believe in the force",
-                         "Who is your favorite character.",
-                         "My favorite Jedi is Luke Skywalker.",
+# conversation about Star Wars
+conversation_StarWars = ["Do you believe in the force?",
+                         "Who is your favorite Stars Wars character?",
+                         "My favorite Star Wars Jedi is Luke Skywalker?",
                          "Do you like the new Star Wars movies?",
-                         "I do not like the new Star Wars movies that recently came out."
+                         "I do not like the new Star Wars movies that recently came out.",
+                         "The Star Wars animated series between 2003 and 2008 where the best animated series baseed on the Clone Wars. ",
+                         "Yes I believe in the force. I learned from master Yoda.",
+                         "The Trench Run is my favorite part in Star Wars New Hope.",
                          ]
 
-#conversation about personal stuff
+# conversation about personal stuff
 conversation_Personal_Info = ["What is your number?",
                               "How old are you?",
                               "My age is none of your business!!!",
@@ -131,17 +148,18 @@ conversation_Personal_Info = ["What is your number?",
 
 # Which Chatbot to train
 trainer = ListTrainer(chatbot)
-#here is how we train the data based on the conversation depending upon what you and Chatquisha was talking about
+# here is how we train the data based on the conversation depending upon what you and Chatquisha was talking about
 trainer.train(conversation)
 trainer.train(conversation_football)
 trainer.train(conversation_Gaming)
 trainer.train(conversation_StarWars)
 trainer.train(conversation_Personal_Info)
 
-#this is for the clear but to stop talking about the subject you and the AI are talking about.
+# this is for the clear but to stop talking about the subject you and the AI are talking about.
 convo_started = False
 
-#is technically how get the response and everything to work
+
+# is technically how get the response and everything to work
 def run_ai():
     global convo_started
     if not convo_started:
@@ -149,19 +167,19 @@ def run_ai():
         tab2_display2.insert(tk.END, "\n\n\t*** Welcome to a talk with Chatquisha ***\n")
         mytext = ("\nHello, I am Chatquisha ")
         tab2_display2.insert(tk.END, "Chatquisha says: " + mytext)
-        #clear button
+        # clear button
         convo_started = True
     if convo_started:
         user_response = input_box2.get("1.0", tk.END)
-        #when you type in your response and display
+        # when you type in your response and display
         tab2_display2.insert(tk.END, "\nYou: " + user_response)
-        #chat bot will responsed when talked to with a voice
+        # chat bot will responsed when talked to with a voice
         mytext = str(chatbot.get_response(user_response))
-        #chatquishas response when talking
+        # chatquishas response when talking
         tab2_display2.insert(tk.END, "\nChatquisha says: " + mytext)
 
-        #Yes!!! she is French!!!
-        language = 'fr'
+        # Yes!!! she is French!!!
+        language = 'en'
 
         # Passing the text and language to the engine,
         # here we have marked slow=False. Which tells
@@ -176,7 +194,47 @@ def run_ai():
         # Playing the converted file
         os.system("welcome.mp3")
 
-#when you end the conversation your on she will display have a "nice day"
+        with sr.Microphone(device_index=device_id, sample_rate=sample_rate,
+                   chunk_size=chunk_size) as source:
+            # wait for a second to let the recognizer adjust the
+            # energy threshold based on the surrounding noise level
+            r.adjust_for_ambient_noise(source)
+            print("\n\nPlease say something to me now:")
+            # Listening for the users input/sentence
+            audio = r.listen(source)
+
+            #try Block
+            try:
+                text = r.recognize_google(audio)
+                #When the user speaks it goes into the input box.
+                input_box2.insert(tk.END, "\nYou: " + text)
+
+                if not convo_started:
+                    tab2_display2.delete("1.0", tk.END)
+                    tab2_display2.insert(tk.END, "\n\n\t*** Welcome to a talk with Chatquisha ***\n")
+                    mytext = "\nHello, I am Chatquisha "
+                    tab2_display2.insert(tk.END, "Chatquisha says: " + mytext)
+                    # clear button
+                    convo_started = True
+                if convo_started:
+                    text = input_box2.get("1.0", tk.END)
+                    # when you type in your response and display
+                    tab2_display2.insert(tk.END, "\nYou: " + text)
+                    # chat bot will responsed when talked to with a voice
+                    mytext = str(chatbot.get_response(text))
+                    # chatquishas response when talking
+                    tab2_display2.insert(tk.END, "\nChatquisha says: " + mytext)
+
+            # EXCEPTIONS NOT MY FAVORITES BUT.... THEY ARE USED FOR CATCHING ERRORS AND THINGS THAT MIGHT HURT YOUR PROGRAM
+            except sr.UnknownValueError:
+
+                print("Google Speech Recognition could not understand audio")
+            #
+            except sr.RequestError as e:
+                print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+
+# when you end the conversation your on she will display have a "nice day"
 def end_convo():
     global convo_started
 
@@ -185,7 +243,7 @@ def end_convo():
 
 
 # Main Home Tab
-l1 = Label(tab1, text='Enter Text to Process in some way... but delete what you said before to continue the convo', padx=20, pady=20)
+l1 = Label(tab1, text='Enter Text to Process ...', padx=20, pady=20)
 l1.grid(row=1, column=0)
 input_box = ScrolledText(tab1, height=10)
 input_box.grid(row=2, column=0, columnspan=2, padx=5, pady=5)
@@ -203,28 +261,31 @@ button_clear_output.grid(row=5, column=0, padx=10, pady=10)
 # Display Screen for Result
 tab1_display = ScrolledText(tab1)
 tab1_display.grid(row=7, column=0, columnspan=3, padx=5, pady=5)
-#--------------------------------------------------------TAB#2 CHATBOT---------------------------------------------------------------
+# --------------------------------------------------------TAB#2 CHATBOT---------------------------------------------------------------
 l2 = Label(tab2, text='Enter Text to talk to Chatquisha..', padx=20, pady=20)
 l2.grid(row=1, column=0)
 
 input_box2 = ScrolledText(tab2, height=12)
 input_box2.grid(row=2, column=0, columnspan=2, padx=5, pady=5)
 
+
 def run_code_on_tab_2():
-    #input output function
+
+    # # input output function
     input_text2 = input_box2.get('1.0', tk.END)
     output_text2 = input_text2
     processed_text2 = input_text2
     tab2.insert(tk.END, processed_text2)
 
-#talk button
+
+# talk button
 button_process_stuff2 = Button(tab2, text="Talk", command=run_ai, width=12, bg='#25d366', fg='purple')
 button_process_stuff2.grid(row=4, column=0, padx=10, pady=10)
-#end Convo Button
-button_process_stuff3 = Button(tab2, text="Clear", command=end_convo,width=12, bg='#337FFF', fg='#000000')
+# end Convo Button
+button_process_stuff3 = Button(tab2, text="Clear", command=end_convo, width=12, bg='#337FFF', fg='#000000')
 button_process_stuff3.grid(row=5, column=0, padx=10, pady=10)
 
-#size of the bottom display
+# size of the bottom display
 tab2_display2 = ScrolledText(tab2, height=18)
 tab2_display2.grid(row=7, column=0, padx=10, pady=10)
 
