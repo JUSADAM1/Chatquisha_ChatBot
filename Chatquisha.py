@@ -1,119 +1,4 @@
 
-
-
-#
-# # My microphones are: (You can check this by running
-# print(sr.Microphone.list_microphone_names())
-# #
-# # enter the name of usb microphone that you found
-# # using lsusb
-# # the following name is only used as an example
-# mic_name = "USB Device 0x46d:0x825: Audio (hw:1, 0)"
-# # Sample rate is how often values are recorded
-# sample_rate = 48000
-# # Chunk is like a buffer. It stores 2048 samples (bytes of data)
-# # here.
-# # it is advisable to use powers of 2 such as 1024 or 2048
-# chunk_size = 2048
-# # Initialize the recognizer
-# r = sr.Recognizer()
-#
-# # generate a list of all audio cards/microphones
-# mic_list = sr.Microphone.list_microphone_names()
-# # print out the list of mics found
-# print("\nMicrophones found: The device index will start with zero\n")
-# print("*" * 20)
-# for x in range(len(mic_list)):
-#     print(x, "- " + mic_list[x])
-# print("*" * 20)
-# # the following loop aims to set the device ID of the mic that
-# # we specifically want to use to avoid ambiguity.
-# # init device ID
-# device_id = 1
-# print("\nMic Device ID has been set as Device ID#", device_id)
-# # use the microphone as source for input. Here, we also specify
-# # which device ID to specifically look for incase the microphone
-# # is not working, an error will pop up saying "device_id undefined"
-# with sr.Microphone(device_index=device_id, sample_rate=sample_rate,
-#                    chunk_size=chunk_size) as source:
-#     # wait for a second to let the recognizer adjust the
-#     # energy threshold based on the surrounding noise level
-#     r.adjust_for_ambient_noise(source)
-#     print("\n\nPlease say something to me now:")
-#     # listens for the user's input
-#     audio = r.listen(source)
-#
-#     try:
-#         text = r.recognize_google(audio)
-#         print("\n\nWhat I understood you saying was: " + text)
-#
-#         # error occurs when google could not understand what was said
-#
-#     except sr.UnknownValueError:
-
-#         print("Google Speech Recognition could not understand audio")
-#
-#     except sr.RequestError as e:
-#         print("Could not request results from Google Speech Recognition service; {0}".format(e))
-# # Initialize the recognizer
-
-
-#def AI_Voice_INPUT():
-#print(sr.Microphone.list_microphone_names())
-# Sample rate is how often values are recorded
-
-sample_rate = 48000
-
-# Chunk is like a buffer. It stores 2048 samples (bytes of data)
-# # here.
-# # it is advisable to use powers of 2 such as 1024 or 2048
-chunk_size = 2048
-
-
-
-# # generate a list of all audio cards/microphones
-#mic_list = sr.Microphone.list_microphone_names()
-# # print out the list of mics found
-
-#print("\nMicrophones found: The device index will start with zero\n")
-#print("*" * 20)
-#for x in range(len(mic_list)):
-#print(x, "- " + mic_list[x])
-#print("*" * 20)
-
-# # the following loop aims to set the device ID of the mic that
-# # we specifically want to use to avoid ambiguity.
-# # init device ID
-device_id = 1
-#print("\nMic Device ID has been set as Device ID#", device_id)
-# # use the microphone as source for input. Here, we also specify
-# # which device ID to specifically look for incase the microphone
-# # is not working, an error will pop up saying "device_id undefined"
-#with sr.Microphone(device_index=device_id, sample_rate=sample_rate,
-#chunk_size=chunk_size) as source:
-
-
-# with sr.Microphone() as source:
-#         #wait for a second to let the recognizer adjust the
-#         #energy threshold based on the surrounding noise level
-#     r.adjust_for_ambient_noise(source)
-#     print("\n\nPlease say something to me now:")
-#         #     # listens for the user's input
-#     audio = r.listen(source)
-#         #
-#     try:
-#         text = r.recognize_google(audio)
-#         print("\n\nWhat I understood you saying was: " + text)
-#
-#     except sr.UnknownValueError:
-#
-#         print("Google Speech Recognition could not understand audio")
-#         #
-#     except sr.RequestError as e:
-#         print("Could not request results from Google Speech Recognition service; {0}".format(e))
-#
-
-# ***************************************************************************************************************************
 import os
 # Libraries
 import tkinter as tk
@@ -129,7 +14,11 @@ chatbot = ChatBot("Chatquisha")
 from gtts import gTTS
 # Speech Recognition library
 import speech_recognition as sr
-#Initializer for the recognizer !?!?! WORD
+
+# imported Textblob because they have a sentiment analyzer
+from textblob import TextBlob
+
+# Initializer for the recognizer !?!?! WORD
 r = sr.Recognizer()
 # Create GUI
 # Create Window
@@ -214,7 +103,6 @@ conversation = ["Hi!! how are you doing?",
                 ]
 # football conversation
 conversation_football = ["What is your favorite football team?",
-                         "My favorite football team is the Oakland Raiders.",
                          "Do you play fantasy football?",
                          "Who do you like on the raiders?",
                          ]
@@ -263,61 +151,39 @@ trainer.train(conversation_football)
 trainer.train(conversation_Gaming)
 trainer.train(conversation_StarWars)
 trainer.train(conversation_Personal_Info)
-#All the corpus yml file on conversation
+
+# All the corpus yml file on conversation
 trainers.train("chatterbot.corpus.english")
-#Corpus data on the bot asking personality based questions
-trainers.train("chatterbot.corpus.english.botprofile")
-#Corpus data based on movies stuff
+# Corpus data based on movies stuff
 trainers.train("chatterbot.corpus.english.movies")
-#Corpus data based on science questions and facts
+# Corpus data based on science questions and facts
 trainers.train("chatterbot.corpus.english.science")
-#Corpus data based on computer question
+# Corpus data based on computer question
 trainers.train("chatterbot.corpus.english.computers")
-#Corpus data based on psychology!!!! VERY INTERESTING THINGS IN HERE
+# Corpus data based on psychology!!!! VERY INTERESTING THINGS IN HERE
 trainers.train("chatterbot.corpus.english.psychology")
-# Corpus data based on regular questions an AI would ask when born, like a child
-trainers.train("chatterbot.corpus.english.ai")
-#Corpus data based on jokes so the AI tells jokes lol!!
+# Corpus data based on jokes so the AI tells jokes lol!!
 trainers.train("chatterbot.corpus.english.humor")
+
 # this is for the clear but to stop talking about the subject you and the AI are talking about.
 convo_started = False
 
+# Sample rate is how often values are recorded
+sample_rate = 48000
+
+# Chunk is like a buffer. It stores 2048 samples (bytes of data)
+# # here.
+# # it is advisable to use powers of 2 such as 1024 or 2048
+chunk_size = 2048
+
+# # the following loop aims to set the device ID of the mic that
+# # we specifically want to use to avoid ambiguity.
+# # init device ID
+device_id = 1
 
 # is technically how get the response and everything to work
 def run_ai():
     global convo_started
-    # if not convo_started:
-    #     tab2_display2.delete("1.0", tk.END)
-    #     tab2_display2.insert(tk.END, "\n\n\t*** Welcome to a talk with Chatquisha ***\n")
-    #     mytext = ("\nHello, I am Chatquisha ")
-    #     tab2_display2.insert(tk.END, "Chatquisha says: " + mytext)
-    #     # clear button
-    #     convo_started = True
-    # if convo_started:
-    #     user_response = input_box2.get("1.0", tk.END)
-    #     # when you type in your response and display
-    #     tab2_display2.insert(tk.END, "\nYou: " + user_response)
-    #     # chat bot will responsed when talked to with a voice
-    #     mytext = str(chatbot.get_response(user_response))
-    #     # chatquishas response when talking
-    #     tab2_display2.insert(tk.END, "\nChatquisha says: " + mytext)
-    #
-    #     # Yes!!! she is French!!!
-    #     #language = 'en'
-    #
-    #     # Passing the text and language to the engine,
-    #     # here we have marked slow=False. Which tells
-    #     # the module that the converted audio should
-    #     # have a high speed
-    #     #myobj = gTTS(text=mytext, lang=language, slow=False)
-    #
-    #     # Saving the converted audio in a mp3 file named
-    #     # welcome
-    #     #myobj.save("welcome.mp3")
-    #
-    #     # Playing the converted file
-    #     os.system("welcome.mp3")
-
     with sr.Microphone(device_index=device_id, sample_rate=sample_rate,
                        chunk_size=chunk_size) as source:
         # wait for a second to let the recognizer adjust the
@@ -327,17 +193,20 @@ def run_ai():
         # Listening for the users input/sentence
         audio = r.listen(source)
 
-        #try Block
+        # try Block
         try:
             text = r.recognize_google(audio)
-            #When the user speaks it goes into the input box.
+            # When the user speaks it goes into the input box.
             input_box2.insert(tk.END, "\nYou: " + text)
+            user_sentiment = TextBlob(text)
+            # Here is where it prints out the subjectivity and polarity of the users statement
+            input_box2.insert(tk.END, user_sentiment.sentiment)
 
             if not convo_started:
                 tab2_display2.delete("1.0", tk.END)
                 tab2_display2.insert(tk.END, "\n\n\t*** Welcome to a talk with Chatquisha ***\n")
-                mytext = "\nHello, I am Chatquisha "
-                tab2_display2.insert(tk.END, "Chatquisha says: " + mytext)
+                hertext = "\nHello, I am Chatquisha "
+                tab2_display2.insert(tk.END, "Chatquisha says: " + hertext)
                 # clear button
                 convo_started = True
             if convo_started:
@@ -399,7 +268,7 @@ button_clear_output.grid(row=5, column=0, padx=10, pady=10)
 # Display Screen for Result
 tab1_display = ScrolledText(tab1)
 tab1_display.grid(row=7, column=0, columnspan=3, padx=5, pady=5)
-# --------------------------------------------------------TAB#2 CHATBOT---------------------------------------------------------------
+# --------------------------------------------------------TAB#2 CHATBOT------------------------------------------------
 l2 = Label(tab2, text='Enter Text to talk to Chatquisha..', padx=20, pady=20)
 l2.grid(row=1, column=0)
 
