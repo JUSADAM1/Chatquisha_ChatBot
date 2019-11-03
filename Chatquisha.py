@@ -1,4 +1,3 @@
-
 import os
 # Libraries
 import tkinter as tk
@@ -8,13 +7,11 @@ from tkinter import ttk
 from tkinter.scrolledtext import *
 # Chat bot imports
 from chatterbot import ChatBot
-
 chatbot = ChatBot("Chatquisha")
 # imported the library to have her talk
 from gtts import gTTS
 # Speech Recognition library
 import speech_recognition as sr
-
 # imported Textblob because they have a sentiment analyzer
 from textblob import TextBlob
 
@@ -73,7 +70,6 @@ label5 = Label(tab5, text='About Title', padx=5, pady=5)
 label5.grid(column=0, row=0)
 
 tab_control.pack(expand=1, fill='both')
-
 
 # Functions
 def run_code_on_tab_1():
@@ -169,7 +165,7 @@ trainers.train("chatterbot.corpus.english.humor")
 convo_started = False
 
 # Sample rate is how often values are recorded
-sample_rate = 48000
+sample_rate = 4800
 
 # Chunk is like a buffer. It stores 2048 samples (bytes of data)
 # # here.
@@ -247,6 +243,7 @@ def end_convo():
 
     tab2_display2.insert(tk.END, "Have a nice day!")
     convo_started = False
+
 
 
 # Main Home Tab
